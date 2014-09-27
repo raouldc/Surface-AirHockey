@@ -42,6 +42,7 @@ namespace _702Test1
 
             // Add handlers for window availability events
             AddWindowAvailabilityHandlers();
+            clientSocket.Connect("127.0.0.1", 9090);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace _702Test1
             Window win = sender as Window;
             string strMessage = e.ChangedButton + ":" + e.GetPosition(win);
 
-            clientSocket.Connect("127.0.0.1", 9090);
+            
             NetworkStream serverStream = clientSocket.GetStream();
             byte[] outStream = System.Text.Encoding.ASCII.GetBytes(strMessage);
             serverStream.Write(outStream, 0, outStream.Length);
