@@ -17,17 +17,25 @@ using Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation.Input;
 using System.Threading;
 using System.Globalization;
+using System.Net.Sockets;
 
 namespace _702Test1
 {
     /// <summary>
     /// Interaction logic for SurfaceWindow1.xaml
     /// </summary>
+    /// 
+
     public partial class SurfaceWindow1 : SurfaceWindow
     {
+
+        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+
         /// <summary>
         /// Default constructor.
         /// </summary>
+        /// 
+
         public SurfaceWindow1()
         {
             InitializeComponent();
@@ -110,7 +118,14 @@ namespace _702Test1
         {
             Window win = sender as Window;
             string strMessage = e.ChangedButton + ":" + e.GetPosition(win);
-            MessageBox.Show(strMessage, win.Title);
+
+            clientSocket.Connect("127.0.0.1", 9090);
+            NetworkStream serverStream = clientSocket.GetStream();
+            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(strMessage);
+            serverStream.Write(outStream, 0, outStream.Length);
+            serverStream.Flush();
+            serverStream.Close();
+            MessageBox.Show("Done?", win.Title);
         }
     }
 }
