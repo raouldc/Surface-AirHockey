@@ -138,8 +138,9 @@ public class Player {
 	 * Returns if the player has reached their max size.
 	 */
 	public boolean hasReachedMax() {
+		
 		if (lives == 0) {
-			return true;
+			//return true;
 		}
 		return false;
 	}

@@ -29,7 +29,7 @@ namespace _702Test1
     public partial class SurfaceWindow1 : SurfaceWindow
     {
 
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+      
 
         /// <summary>
         /// Default constructor.
@@ -42,7 +42,7 @@ namespace _702Test1
 
             // Add handlers for window availability events
             AddWindowAvailabilityHandlers();
-            clientSocket.Connect("127.0.0.1", 9090);
+        
         }
 
         /// <summary>
@@ -120,13 +120,22 @@ namespace _702Test1
             Window win = sender as Window;
             string strMessage = e.ChangedButton + ":" + e.GetPosition(win);
 
-            
-            NetworkStream serverStream = clientSocket.GetStream();
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(strMessage);
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
-            serverStream.Close();
-            MessageBox.Show("Done?", win.Title);
+            System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+            clientSocket.Connect("127.0.0.1", 9090);
+            if (clientSocket.Connected)
+            {
+                NetworkStream serverStream = clientSocket.GetStream();
+                byte[] outStream = System.Text.Encoding.ASCII.GetBytes(strMessage);
+                serverStream.Write(outStream, 0, outStream.Length);
+                serverStream.Flush();
+                serverStream.Close();
+                //MessageBox.Show("Done?", win.Title);
+            }
+            else
+            {
+                //clientSocket.Connect("127.0.0.1", 9090);
+                MessageBox.Show("closed socket", win.Title);
+            }
         }
     }
 }

@@ -68,6 +68,13 @@ public class A3JPanel extends JPanel implements KeyListener, ActionListener,Mous
 
 		addKeyListener(this);
 		addMouseListener(this);
+		
+		try {
+			getInputFromNetwork();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 
