@@ -338,11 +338,13 @@ namespace AirHockey
             {
                 PlayPuckCollisionEffect();
                 _puckVelocity.Y *= -1;
+                _puck.SetVelocity(_puckVelocity);
             }
             if (_puckPosition.Y < 0 + (_puckTexture.Height / 2) && _puckVelocity.Y < 0)
             {
                 PlayPuckCollisionEffect();
                 _puckVelocity.Y *= -1;
+                _puck.SetVelocity(_puckVelocity);
             }
             if (_puckPosition.X > (GraphicsDevice.Viewport.Width - (_puckTexture.Width / 2)) && _puckVelocity.X > 0)
             {
@@ -354,6 +356,7 @@ namespace AirHockey
                 {
                     PlayPuckCollisionEffect();
                     _puckVelocity.X *= -1;
+                    _puck.SetVelocity(_puckVelocity);
                 }
             }
             if (_puckPosition.X < 0 + (_puckTexture.Width / 2) && _puckVelocity.X < 0)
@@ -366,6 +369,7 @@ namespace AirHockey
                 {
                     PlayPuckCollisionEffect();
                     _puckVelocity.X *= -1;
+                    _puck.SetVelocity(_puckVelocity);
                 }
             }
         }
