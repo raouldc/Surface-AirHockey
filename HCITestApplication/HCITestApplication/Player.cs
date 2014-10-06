@@ -92,26 +92,34 @@ namespace AirHockey
                         _touchBinder.Bind(touchLoc.Id, _playerNumber);
                     }
                 }
+                if (touchLoc.IsFingerRecognized || InteractiveSurface.PrimarySurfaceDevice.IsFingerRecognitionSupported == false)
+                {
+                    Vector2 newVelocity = new Vector2(touchLoc.X, touchLoc.Y) - Position;
+                    newVelocity = newVelocity * 0.01f;
 
-                //    if (_touchBinder.IsTouchPointBoundToPlayer(touchLoc.Id, _playerNumber))
+                    newVelocity = RestrictMaxPlayerVelocity(newVelocity);
+                    SetVelocity(newVelocity);
+                }
+
+                //if (_touchBinder.IsTouchPointBoundToPlayer(touchLoc.Id, _playerNumber))
+                //{
+                //    if (touchLoc.State == TouchLocationState.Released)
                 //    {
-                //        if (touchLoc.State == TouchLocationState.Released)
-                //        {
-                //            // If the touch point is released we need to unbind it from the player it was bound to.
-                //            _touchBinder.Release(touchLoc.Id);
-                //        }
-                //        else if (touchLoc.State == TouchLocationState.Moved)
-                //        {
-                //            // Provided the touch point is bound to this player.
-                //            // Calculate the distance between the player and the touch
-                //            // location and apply velocity to the player towards the touch point.
-                //            Vector2 newVelocity = touchLoc.Position - Position;
-                //            newVelocity = newVelocity * 0.01f;
-
-                //            newVelocity = RestrictMaxPlayerVelocity(newVelocity);
-                //            SetVelocity(newVelocity);
-                //        }
+                //        // If the touch point is released we need to unbind it from the player it was bound to.
+                //        _touchBinder.Release(touchLoc.Id);
                 //    }
+                //    else if (touchLoc.State == TouchLocationState.Moved)
+                //    {
+                //        // Provided the touch point is bound to this player.
+                //        // Calculate the distance between the player and the touch
+                //        // location and apply velocity to the player towards the touch point.
+                //        Vector2 newVelocity = touchLoc.Position - Position;
+                //        newVelocity = newVelocity * 0.01f;
+
+                //        newVelocity = RestrictMaxPlayerVelocity(newVelocity);
+                //        SetVelocity(newVelocity);
+                //    }
+                //}
                 //    else if (touchLoc.State == TouchLocationState.Pressed || touchLoc.State == TouchLocationState.Moved)
                 //    {
                 //        // Check that the touch point is not already bound to a player.
