@@ -94,11 +94,14 @@ namespace AirHockey
                 }
                 if (touchLoc.IsFingerRecognized || InteractiveSurface.PrimarySurfaceDevice.IsFingerRecognitionSupported == false)
                 {
-                    Vector2 newVelocity = new Vector2(touchLoc.X, touchLoc.Y) - Position;
-                    newVelocity = newVelocity * 0.01f;
+                    if (_touchBinder.IsTouchPointBoundToPlayer(touchLoc.Id, _playerNumber))
+                    {
+                        Vector2 newVelocity = new Vector2(touchLoc.X, touchLoc.Y) - Position;
+                        newVelocity = newVelocity * 0.01f;
 
-                    newVelocity = RestrictMaxPlayerVelocity(newVelocity);
-                    SetVelocity(newVelocity);
+                        newVelocity = RestrictMaxPlayerVelocity(newVelocity);
+                        SetVelocity(newVelocity);
+                    }
                 }
 
                 //if (_touchBinder.IsTouchPointBoundToPlayer(touchLoc.Id, _playerNumber))
