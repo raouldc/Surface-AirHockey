@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using CollisionLib;
 using System.Collections.ObjectModel;
+using Microsoft.Surface.Core;
 
 namespace AirHockey
 {
@@ -50,6 +51,7 @@ namespace AirHockey
         private float _p1ScoreOpacity = 0.8f;
         private int _player2Score;
         private float _p2ScoreOpacity = 0.8f;
+        private TouchTarget touchTarget;
 
         //private Vector2 _puckPosition;
         //private Vector2 _player1Position;
@@ -98,6 +100,9 @@ namespace AirHockey
         {
             // TODO: Add your initialization logic here
 
+            IsMouseVisible = true;
+            InitializeSurfaceInput();
+
             var menu = new MainMenu(this);
             this.Components.Add(menu);
 
@@ -107,8 +112,8 @@ namespace AirHockey
             GameMode = AirHockey.GameMode.Menu;
 
             PlayerTouchBinder binder = new PlayerTouchBinder();
-            _player1 = new Player(this, PlayerNumber.Player1, binder);
-            _player2 = new Player(this, PlayerNumber.Player2, binder);
+            _player1 = new Player(this, PlayerNumber.Player1, binder, touchTarget);
+            _player2 = new Player(this, PlayerNumber.Player2, binder, touchTarget);
             _puck = new Puck(this);
 
             var collideables = new Collection<ICollidable>();
@@ -129,6 +134,22 @@ namespace AirHockey
             InitialiseToNewGameState();
 
             base.Initialize();
+        }
+
+        private void InitializeSurfaceInput()
+        {
+            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero,
+                "Window initialization must be complete before InitializeSurfaceInput is called");
+            if (Window == null || Window.Handle == IntPtr.Zero)
+                return;
+            System.Diagnostics.Debug.Assert(touchTarget == null,
+                "Surface input already initialized");
+            if (touchTarget != null)
+                return;
+
+            // Create a target for surface input.
+            touchTarget = new TouchTarget(Window.Handle, EventThreadChoice.OnBackgroundThread);
+            touchTarget.EnableInput();
         }
 
         internal void NewGame()
