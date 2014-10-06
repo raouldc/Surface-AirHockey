@@ -257,8 +257,10 @@ namespace AirHockey
                     }
                 }
 
+                _puckPosition = _puck.Position;
+                _puckVelocity = _puck.Velocity;
                 _collisionManager.ApplyCollisions(gameTime.ElapsedGameTime);
-                //HandlePuckWallCollision();
+                HandlePuckWallCollision();
                 //HandlePuckPlayerCollision(_player1Position, _player1Velocity);
                 //HandlePuckPlayerCollision(_player2Position, _player2Velocity);
 
