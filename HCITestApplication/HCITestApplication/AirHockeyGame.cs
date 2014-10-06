@@ -53,18 +53,18 @@ namespace AirHockey
         private float _p2ScoreOpacity = 0.8f;
         private TouchTarget touchTarget;
 
-        //private Vector2 _puckPosition;
-        //private Vector2 _player1Position;
-        //private Vector2 _player2Position;
+        private Vector2 _puckPosition;
+        private Vector2 _player1Position;
+        private Vector2 _player2Position;
 
-        //private Texture2D _puckTexture;
-        //private Texture2D _player1Texture;
-        //private Texture2D _player2Texture;
+        private Texture2D _puckTexture;
+        private Texture2D _player1Texture;
+        private Texture2D _player2Texture;
 
-        //private Vector2 _player1Velocity;
-        //private Vector2 _player2Velocity;
-        //private Vector2 _puckVelocity;
-        //private Vector2 _puckFriction;
+        private Vector2 _player1Velocity;
+        private Vector2 _player2Velocity;
+        private Vector2 _puckVelocity;
+        private Vector2 _puckFriction;
 
         private CollisionManager _collisionManager;
 
@@ -191,7 +191,7 @@ namespace AirHockey
             _scoreFont = Content.Load<SpriteFont>("ScoreFont");
             _messageFont = Content.Load<SpriteFont>("MessageFont");
 
-            //_puckTexture = Content.Load<Texture2D>("Puck");
+            _puckTexture = Content.Load<Texture2D>("Puck");
             //_player1Texture = Content.Load<Texture2D>("Player1");
             //_player2Texture = Content.Load<Texture2D>("Player2");
 
@@ -300,6 +300,7 @@ namespace AirHockey
 
         private bool _gameOver;
         private TimeSpan _gameOverTime;
+    
 
         private void GameOver(ActionPlayer actionPlayer, GameTime gameTime)
         {
@@ -322,50 +323,50 @@ namespace AirHockey
             _gameOverTime = gameTime.TotalGameTime;
         }
 
-        //private void HandlePuckWallCollision()
-        //{
-        //    int goalWidth = (GraphicsDevice.Viewport.Height / 2);
-        //    int goalCentre = (GraphicsDevice.Viewport.Height / 2);
-        //    int goalLeft = goalCentre - (goalWidth/2);
-        //    int goalRight = goalCentre + (goalWidth / 2);
-        //    int realativeGoalLeft = goalLeft + (_puckTexture.Width / 2);
-        //    int realativeGoalRight = goalRight - (_puckTexture.Width / 2);
+        private void HandlePuckWallCollision()
+        {
+            int goalWidth = (GraphicsDevice.Viewport.Height / 2);
+            int goalCentre = (GraphicsDevice.Viewport.Height / 2);
+            int goalLeft = goalCentre - (goalWidth / 2);
+            int goalRight = goalCentre + (goalWidth / 2);
+            int realativeGoalLeft = goalLeft + (_puckTexture.Width / 2);
+            int realativeGoalRight = goalRight - (_puckTexture.Width / 2);
 
-        //    if (_puckPosition.Y > (GraphicsDevice.Viewport.Height - (_puckTexture.Height / 2)) && _puckVelocity.Y > 0)
-        //    {
-        //        PlayPuckCollisionEffect();
-        //        _puckVelocity.Y *= -1;
-        //    }
-        //    if (_puckPosition.Y < 0 + (_puckTexture.Height / 2) && _puckVelocity.Y < 0)
-        //    {
-        //        PlayPuckCollisionEffect();
-        //        _puckVelocity.Y *= -1;
-        //    }
-        //    if (_puckPosition.X > (GraphicsDevice.Viewport.Width - (_puckTexture.Width / 2)) && _puckVelocity.X > 0)
-        //    {
-        //        if (_puckPosition.Y > realativeGoalLeft && _puckPosition.Y < realativeGoalRight)
-        //        {
-        //            GoalScored(ActionPlayer.Player1);
-        //        }
-        //        else
-        //        {
-        //            PlayPuckCollisionEffect();
-        //            _puckVelocity.X *= -1;
-        //        }
-        //    }
-        //    if (_puckPosition.X < 0 + (_puckTexture.Width / 2) && _puckVelocity.X < 0)
-        //    {
-        //        if (_puckPosition.Y > realativeGoalLeft && _puckPosition.Y < realativeGoalRight)
-        //        {
-        //            GoalScored(ActionPlayer.Player2);
-        //        }
-        //        else
-        //        {
-        //            PlayPuckCollisionEffect();
-        //            _puckVelocity.X *= -1;
-        //        }
-        //    }
-        //}
+            if (_puckPosition.Y > (GraphicsDevice.Viewport.Height - (_puckTexture.Height / 2)) && _puckVelocity.Y > 0)
+            {
+                PlayPuckCollisionEffect();
+                _puckVelocity.Y *= -1;
+            }
+            if (_puckPosition.Y < 0 + (_puckTexture.Height / 2) && _puckVelocity.Y < 0)
+            {
+                PlayPuckCollisionEffect();
+                _puckVelocity.Y *= -1;
+            }
+            if (_puckPosition.X > (GraphicsDevice.Viewport.Width - (_puckTexture.Width / 2)) && _puckVelocity.X > 0)
+            {
+                if (_puckPosition.Y > realativeGoalLeft && _puckPosition.Y < realativeGoalRight)
+                {
+                    GoalScored(ActionPlayer.Player1);
+                }
+                else
+                {
+                    PlayPuckCollisionEffect();
+                    _puckVelocity.X *= -1;
+                }
+            }
+            if (_puckPosition.X < 0 + (_puckTexture.Width / 2) && _puckVelocity.X < 0)
+            {
+                if (_puckPosition.Y > realativeGoalLeft && _puckPosition.Y < realativeGoalRight)
+                {
+                    GoalScored(ActionPlayer.Player2);
+                }
+                else
+                {
+                    PlayPuckCollisionEffect();
+                    _puckVelocity.X *= -1;
+                }
+            }
+        }
 
         private void PlayPuckCollisionEffect()
         {
