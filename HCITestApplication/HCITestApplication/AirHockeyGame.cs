@@ -282,6 +282,8 @@ namespace AirHockey
                 _puckVelocity = _puck.Velocity;
                 _collisionManager.ApplyCollisions(gameTime.ElapsedGameTime);
                 HandlePuckWallCollision();
+                HandlePlayerWallCollision(_player1);
+                HandlePlayerWallCollision(_player2);
                 //HandlePuckPlayerCollision(_player1Position, _player1Velocity);
                 //HandlePuckPlayerCollision(_player2Position, _player2Velocity);
 
@@ -344,6 +346,28 @@ namespace AirHockey
             _messageOpacity = 1;
             _gameOver = true;
             _gameOverTime = gameTime.TotalGameTime;
+        }
+
+        private void HandlePlayerWallCollision(Player player)
+        {
+
+            if (player.Position.Y > (GraphicsDevice.Viewport.Height - (_player1Texture.Height / 2)) && player.Velocity.Y > 0)
+            {
+                player.SetVelocity(player.Velocity * -1);
+            }
+            if (player.Position.Y < 0 + (_player1Texture.Height / 2) && player.Velocity.Y < 0)
+            {
+                player.SetVelocity(player.Velocity * -1);
+            }
+            if (player.Position.X > (GraphicsDevice.Viewport.Width - (_puckTexture.Width / 2)) && player.Velocity.X > 0)
+            {
+                player.SetVelocity(player.Velocity * -1);
+            }
+            if (player.Position.X < 0 + (_puckTexture.Width / 2) && player.Velocity.X < 0)
+            {
+                player.SetVelocity(player.Velocity * -1);
+            }
+
         }
 
         private void HandlePuckWallCollision()
