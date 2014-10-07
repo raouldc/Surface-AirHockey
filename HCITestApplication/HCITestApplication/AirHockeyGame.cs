@@ -107,6 +107,7 @@ namespace AirHockey
             graphics.PreferredBackBufferWidth = Program.WindowSize.Width;
             graphics.PreferredBackBufferHeight = Program.WindowSize.Height;
             graphics.ApplyChanges();
+
             // Make sure the window is in the right location.
             Program.PositionWindow();
         }
@@ -284,7 +285,7 @@ namespace AirHockey
                 //HandlePuckPlayerCollision(_player1Position, _player1Velocity);
                 //HandlePuckPlayerCollision(_player2Position, _player2Velocity);
 
-                //ApplyPuckFriction();
+                ApplyPuckFriction();
 
                 if (_messageOpacity > 0)
                 {
@@ -429,26 +430,26 @@ namespace AirHockey
             InitialisePuckToStartingConditions();
         }
 
-        //private void ApplyPuckFriction()
-        //{
-        //    if (_puckVelocity.X < 0)
-        //    {
-        //        _puckVelocity.X += _puckFriction.X;
-        //    }
-        //    else if (_puckVelocity.X > 0)
-        //    {
-        //        _puckVelocity.X -= _puckFriction.X;
-        //    }
+        private void ApplyPuckFriction()
+        {
+            if (_puckVelocity.X < 0)
+            {
+                _puckVelocity.X += _puckFriction.X;
+            }
+            else if (_puckVelocity.X > 0)
+            {
+                _puckVelocity.X -= _puckFriction.X;
+            }
 
-        //    if (_puckVelocity.Y < 0)
-        //    {
-        //        _puckVelocity.Y += _puckFriction.Y;
-        //    }
-        //    else if (_puckVelocity.Y > 0)
-        //    {
-        //        _puckVelocity.Y -= _puckFriction.Y;
-        //    }
-        //}
+            if (_puckVelocity.Y < 0)
+            {
+                _puckVelocity.Y += _puckFriction.Y;
+            }
+            else if (_puckVelocity.Y > 0)
+            {
+                _puckVelocity.Y -= _puckFriction.Y;
+            }
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
