@@ -27,6 +27,7 @@ namespace AirHockey
             : base(game)
         {
             // TODO: Construct any child components here
+            
         }
 
         public AirHockeyGame AHGame { get { return this.Game as AirHockeyGame; } }
@@ -45,6 +46,7 @@ namespace AirHockey
             _pitchSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             _pitchPosition = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            _pitchScale = (GraphicsDevice.Viewport.Width / _pitchTexture.Width);
         }
 
         protected override void LoadContent()
