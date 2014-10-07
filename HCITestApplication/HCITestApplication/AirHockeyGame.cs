@@ -8,6 +8,7 @@ using System.Diagnostics;
 using CollisionLib;
 using System.Collections.ObjectModel;
 using Microsoft.Surface.Core;
+using HCITestApplication;
 
 namespace AirHockey
 {
@@ -60,7 +61,7 @@ namespace AirHockey
         private Texture2D _puckTexture;
         private Texture2D _player1Texture;
         private Texture2D _player2Texture;
-
+        private readonly GraphicsDeviceManager graphics;
         private Vector2 _player1Velocity;
         private Vector2 _player2Velocity;
         private Vector2 _puckVelocity;
@@ -85,11 +86,30 @@ namespace AirHockey
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics = _graphics;
 
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
         }
+        /// <summary>
+        /// Moves and sizes the window to cover the input surface.
+        /// </summary>
+        private void SetWindowOnSurface()
+        {
+            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero,
+                "Window initialization must be complete before SetWindowOnSurface is called");
+            if (Window == null || Window.Handle == IntPtr.Zero)
+                return;
 
+            // Get the window sized right.
+            Program.InitializeWindow(Window);
+            // Set the graphics device buffers.
+            graphics.PreferredBackBufferWidth = Program.WindowSize.Width;
+            graphics.PreferredBackBufferHeight = Program.WindowSize.Height;
+            graphics.ApplyChanges();
+            // Make sure the window is in the right location.
+            Program.PositionWindow();
+        }
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -102,7 +122,7 @@ namespace AirHockey
 
             IsMouseVisible = true;
             InitializeSurfaceInput();
-
+            SetWindowOnSurface();
             var menu = new MainMenu(this);
             this.Components.Add(menu);
 
