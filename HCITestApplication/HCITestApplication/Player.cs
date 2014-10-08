@@ -92,7 +92,7 @@ namespace AirHockey
                         _touchBinder.Bind(touchLoc.Id, _playerNumber);
                     }
                 }
-                if (touchLoc.IsFingerRecognized || InteractiveSurface.PrimarySurfaceDevice.IsFingerRecognitionSupported == false)
+                if (touchLoc.PhysicalArea > 0)
                 {
                     if (_touchBinder.IsTouchPointBoundToPlayer(touchLoc.Id, _playerNumber))
                     {
