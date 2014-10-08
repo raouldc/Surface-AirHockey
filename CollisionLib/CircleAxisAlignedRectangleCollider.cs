@@ -11,8 +11,6 @@ namespace CollisionLib
     public class CircleAxisAlignedRectangleCollider : BaseCollider
     {
         private Game _game;
-        private String _serverIP = "127.0.0.1";
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
 
         public CircleAxisAlignedRectangleCollider(Game game)
         {
@@ -238,15 +236,6 @@ namespace CollisionLib
                     // Set the objects new positions and velocities.
                     object1.SetVelocity(vel1_after);
                     object2.SetVelocity(vel2_after);
-
-                    //Send packet to network
-                    clientSocket.Connect(_serverIP, 9090);
-                    NetworkStream serverStream = clientSocket.GetStream();
-                    byte[] outStream = System.Text.Encoding.ASCII.GetBytes("Collision!");
-                    serverStream.Write(outStream, 0, outStream.Length);
-                    serverStream.Flush();
-                    serverStream.Close();
-                    Console.WriteLine("Sent collision message!");
                 }
             }
         }

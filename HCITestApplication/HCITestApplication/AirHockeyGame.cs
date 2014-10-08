@@ -351,19 +351,19 @@ namespace AirHockey
         private void HandlePlayerWallCollision(Player player)
         {
 
-            if (player.Position.Y > (GraphicsDevice.Viewport.Height - (_player1Texture.Height / 2)) && player.Velocity.Y > 0)
+            if (player.Position.Y > (GraphicsDevice.Viewport.Height) && player.Velocity.Y > 0)
             {
                 player.SetVelocity(player.Velocity * -1);
             }
-            if (player.Position.Y < 0 + (_player1Texture.Height / 2) && player.Velocity.Y < 0)
+            if (player.Position.Y < 0  && player.Velocity.Y < 0)
             {
                 player.SetVelocity(player.Velocity * -1);
             }
-            if (player.Position.X > (GraphicsDevice.Viewport.Width - (_puckTexture.Width / 2)) && player.Velocity.X > 0)
+            if (player.Position.X > (GraphicsDevice.Viewport.Width) && player.Velocity.X > 0)
             {
                 player.SetVelocity(player.Velocity * -1);
             }
-            if (player.Position.X < 0 + (_puckTexture.Width / 2) && player.Velocity.X < 0)
+            if (player.Position.X < 0  && player.Velocity.X < 0)
             {
                 player.SetVelocity(player.Velocity * -1);
             }
