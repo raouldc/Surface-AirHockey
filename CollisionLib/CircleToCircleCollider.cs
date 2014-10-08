@@ -10,11 +10,13 @@ namespace CollisionLib
     public class CircleToCircleCollider : BaseCollider
     {
         private Game _game;
-        private String _serverIP = "127.0.0.1";
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+        private String _serverIP = "172.23.2.9";
+        private String _server2IP = "172.23.22.243";
+        
         public CircleToCircleCollider(Game game)
         {
             _game = game;
+            
         }
 
         public override bool CanCollide(ICollidable object1, ICollidable object2)
@@ -65,12 +67,44 @@ namespace CollisionLib
                 object2.SetState(object2AdjustedPositionAfterCollision, vel2_after);
 
                 //Send packet to network
-                clientSocket.Connect(_serverIP, 9090);
-                NetworkStream serverStream = clientSocket.GetStream();
-                byte[] outStream = System.Text.Encoding.ASCII.GetBytes("Collision!");
-                serverStream.Write(outStream, 0, outStream.Length);
-                serverStream.Flush();
-                serverStream.Close();
+                if (object1.ToString().Equals("Player1") || object2.ToString().Equals("Player1"))
+                {
+                    try
+                    {
+                        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+                        clientSocket.Connect(_serverIP, 9090);
+                        NetworkStream serverStream = clientSocket.GetStream();
+                        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(object1.ToString());
+                        serverStream.Write(outStream, 0, outStream.Length);
+                        serverStream.Flush();
+                        serverStream.Close();
+                    }
+                    catch (SocketException)
+                    {
+
+
+                    }
+                }
+                if (object1.ToString().Equals("Player2") || object2.ToString().Equals("Player2"))
+                {
+                    try
+                    {
+                        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+                        clientSocket.Connect(_server2IP, 9090);
+                        NetworkStream serverStream = clientSocket.GetStream();
+                        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(object1.ToString());
+                        serverStream.Write(outStream, 0, outStream.Length);
+                        serverStream.Flush();
+                        serverStream.Close();
+                    }
+                    catch (SocketException)
+                    {
+                        
+                        
+                    }
+                }
+                
+                //clientSocket.Close();
                 Console.WriteLine("Sent collision message!");
             }
         }

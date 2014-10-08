@@ -15,7 +15,7 @@ namespace AirHockey
     /// </summary>
     public class Player : BaseGamePiece
     {
-        private PlayerNumber _playerNumber;
+        public PlayerNumber _playerNumber;
         private PlayerTouchBinder _touchBinder;
         private TouchTarget touchTarget;
 
@@ -168,7 +168,10 @@ namespace AirHockey
                 return playerVelocity;
             }
         }
-
+        public override string ToString()
+        {
+            return _playerNumber.ToString();
+        }
 
     }
 }
