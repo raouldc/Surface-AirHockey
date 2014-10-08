@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String x ="";
 					while((x=in.readLine())!=null){
-						System.out.println(x);
+						vibrate();
 					}
 				} finally {
 					socket.close();
