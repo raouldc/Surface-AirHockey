@@ -149,11 +149,14 @@ public class MainActivity extends Activity {
 						BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 						String x ="";
 						vibrate();
-						publishProgress("Recieved");
+						String msg="";
 						while((x=in.readLine())!=null){
-							System.out.println(x);
+							msg+=x;
 							
 						}
+						publishProgress("Recieved: "+msg);
+
+						
 					} finally {
 						socket.close();
 					}
