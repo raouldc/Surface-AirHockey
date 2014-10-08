@@ -1,6 +1,12 @@
 package com.example.vibrateandroid;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -24,6 +30,41 @@ public class MainActivity extends Activity implements View.OnClickListener{
         
         final Button button = (Button) findViewById(R.id.button_id);
         button.setOnClickListener(this);
+        
+        ServerSocket listener = null;
+		try {
+			listener = new ServerSocket(9090);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			while (true) {
+				Socket socket = listener.accept();
+				try {
+
+					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					String x ="";
+					while((x=in.readLine())!=null){
+						System.out.println(x);
+					}
+				} finally {
+					socket.close();
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				listener.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+        
     }
     
     public void onClick(View view) {
