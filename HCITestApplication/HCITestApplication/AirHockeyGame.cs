@@ -507,18 +507,18 @@ namespace AirHockey
             _spriteBatch.DrawString(_messageFont, _messageP2, _messageP2Position, Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(270), new Vector2(messageP2Size.X / 2, messageP2Size.Y / 2), 1, SpriteEffects.None, 0);
 
             Vector2 win1Size = _messageFont.MeasureString("You have won");
-            Vector2 win2Size = _messageFont.MeasureString("an XBox");
+            Vector2 win2Size = _messageFont.MeasureString("the game");
 
             if (_messageP2 == "WIN !")
             {
 
                 _spriteBatch.DrawString(_messageFont, "You have won", _messageP2Position + new Vector2(50, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(270), new Vector2(win1Size.X / 2, win1Size.Y / 2), 1, SpriteEffects.None, 0);
-                _spriteBatch.DrawString(_messageFont, "an XBox", _messageP2Position + new Vector2(100, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(270), new Vector2(win2Size.X / 2, win2Size.Y / 2), 1, SpriteEffects.None, 0);
+                _spriteBatch.DrawString(_messageFont, "the game", _messageP2Position + new Vector2(100, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(270), new Vector2(win2Size.X / 2, win2Size.Y / 2), 1, SpriteEffects.None, 0);
             }
             else if (_messageP1 == "WIN !")
             {
                 _spriteBatch.DrawString(_messageFont, "You have won", _messageP1Position - new Vector2(50, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(90), new Vector2(win1Size.X / 2, win1Size.Y / 2), 1, SpriteEffects.None, 0);
-                _spriteBatch.DrawString(_messageFont, "an XBox", _messageP1Position - new Vector2(100, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(90), new Vector2(win2Size.X / 2, win2Size.Y / 2), 1, SpriteEffects.None, 0);
+                _spriteBatch.DrawString(_messageFont, "the game", _messageP1Position - new Vector2(100, 0), Color.White * _messageOpacity * _gameOpacity, MathHelper.ToRadians(90), new Vector2(win2Size.X / 2, win2Size.Y / 2), 1, SpriteEffects.None, 0);
             }
         }
 
