@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace CollisionLib
 {
@@ -71,13 +72,15 @@ namespace CollisionLib
                 {
                     try
                     {
-                        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-                        clientSocket.Connect(_serverIP, 9090);
-                        NetworkStream serverStream = clientSocket.GetStream();
-                        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(object1.ToString());
-                        serverStream.Write(outStream, 0, outStream.Length);
-                        serverStream.Flush();
-                        serverStream.Close();
+                         UdpClient clientSocket = new UdpClient( _serverIP,9090);
+                        clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(object1.ToString()), object1.ToString().Length);
+                        clientSocket.Close();
+                        //clientSocket.Connect(_serverIP, 9090);
+                        //NetworkStream serverStream = clientSocket;
+                        //byte[] outStream = System.Text.Encoding.ASCII.GetBytes(object1.ToString());
+                        //serverStream.Write(outStream, 0, outStream.Length);
+                        //serverStream.Flush();
+                        //serverStream.Close();
                     }
                     catch (SocketException)
                     {
@@ -89,13 +92,9 @@ namespace CollisionLib
                 {
                     try
                     {
-                        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-                        clientSocket.Connect(_server2IP, 9090);
-                        NetworkStream serverStream = clientSocket.GetStream();
-                        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(object1.ToString());
-                        serverStream.Write(outStream, 0, outStream.Length);
-                        serverStream.Flush();
-                        serverStream.Close();
+                        System.Net.Sockets.UdpClient clientSocket = new System.Net.Sockets.UdpClient(_server2IP,9090);
+                        clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(object2.ToString()), object2.ToString().Length);
+                        clientSocket.Close();
                     }
                     catch (SocketException)
                     {
@@ -108,6 +107,9 @@ namespace CollisionLib
                 Console.WriteLine("Sent collision message!");
             }
         }
+
+
+        
 
         private static float MoveBackToCollisionPoint(TimeSpan frameDuration, ICollidableCircle object1, ICollidableCircle object2, float distanceAtFrameEnd, float collisionDistance)
         {
