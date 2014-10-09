@@ -78,7 +78,7 @@ namespace AirHockey
         {
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(_texture, _position, null, Color.White * _game.GameOpacity, 0, new Vector2(_texture.Width / 2, _texture.Height / 2), _scale, SpriteEffects.None, 0);
+            _spriteBatch.Draw(_texture, _position, null, Color.White * 0.9f, 0, new Vector2(_texture.Width / 2, _texture.Height / 2), _scale, SpriteEffects.None, 0);
 
             _spriteBatch.End();
         }
