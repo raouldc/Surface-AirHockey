@@ -13,7 +13,7 @@ namespace AirHockey
         private Texture2D _texture;
         private Vector2 _position;
         private Vector2 _velocity;
-        private float _scale = 1f;
+        private float _scale = 3f;
         private Vector2 _friction;
 
         private SpriteBatch _spriteBatch;
