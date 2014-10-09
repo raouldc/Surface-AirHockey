@@ -1,14 +1,18 @@
 package com.example.vibrateandroid;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.math.BigInteger;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.UnknownHostException;
+import java.nio.ByteOrder;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -16,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,11 +28,14 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	Vibrator vibrator;
-	ServerSocket listener;
+	MulticastSocket listener;
 	EditText portEditText; 
 	TextView statusEditText; 
-	
+	TextView myAddressTextView;
 	ListenOnPortTask task;
+	
+
+	private AtomicBoolean IsVibrating =  new AtomicBoolean(false);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +44,36 @@ public class MainActivity extends Activity {
 		vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 		portEditText= (EditText) findViewById(R.id.portEditText);
 		statusEditText= (TextView) findViewById(R.id.statusTextView);
-		
+		myAddressTextView= (TextView) findViewById(R.id.myAddressTextView);
+		myAddressTextView.setText(wifiIpAddress(this));
+
 
 
 	}
+	
+	
+	
+	protected String wifiIpAddress(Context context) {
+	    WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+	    int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 
+	    // Convert little-endian to big-endianif needed
+	    if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
+	        ipAddress = Integer.reverseBytes(ipAddress);
+	    }
+
+	    byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
+
+	    String ipAddressString;
+	    try {
+	        ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
+	    } catch (UnknownHostException ex) {
+	        Log.e("WIFIIP", "Unable to get host address.");
+	        ipAddressString = null;
+	    }
+
+	    return ipAddressString;
+	}
 	public void vibrateButtonPressed(View view){
 		vibrate();
 	}
@@ -52,23 +85,38 @@ public class MainActivity extends Activity {
 
 	public void listenButtonPressed(View view){
 
-		if(task!=null && !task.isCancelled()){
+		if(task==null){
 			
-			//End the task
-			
-			task.cancel(true);
+			Button listenButton= (Button) findViewById(R.id.listenButton);
+			listenButton.setEnabled(false);
+			task = new ListenOnPortTask();
+			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getPort());
 		}
-		
-		
-		task = new ListenOnPortTask();
-		task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getPort());
-		
+
 	}
 
 
 	public void vibrate() {
 		//textWidget.setText(textWidget.getText() + "Zoom... ");
-		vibrator.vibrate(600);
+		if(!IsVibrating.get()){
+			final int time= 150;
+			vibrator.vibrate(time);
+			Thread t = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						Thread.sleep(time);
+						IsVibrating.set(false);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
+		}
 	}
 
 	/*public void vibrate(View v){
@@ -103,85 +151,35 @@ public class MainActivity extends Activity {
 		@Override
 		protected Void doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
-
-
-			for (Integer port : params) {
-				begin(port);
-			}
-
+			begin(params[0]);
 			return null;
 		}
-		
+
 		protected void onProgressUpdate(String...strings ){
 			for (String string : strings) {
 				statusEditText.setText("listening on port: "+ getPort() +"\n status :"+string);
+				vibrate();
 			}
-			
+
 		}
-
-
 		public void begin(int port){
-			//Close if open
-			if(listener!=null ){
+			while (true) {
+				try{
+					String text;
+					int server_port = port;
+					byte[] message = new byte[1500];
+					//publishProgress("Listening");
+					DatagramSocket s = new DatagramSocket(server_port);
+					DatagramPacket p = new DatagramPacket(message, message.length);
+					s.receive(p);
+					text = new String(message, 0, p.getLength());
+					publishProgress(text);
+					s.close();
+				}catch (Exception e){
 
-				try {
-					listener.close();
-					
-					
-					Log.i("ASYNCTASK", "closed port ");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			listener = null;
-			try {
-				listener = new ServerSocket(port);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				while (true) {
-					publishProgress("Listening");
-					Socket socket = listener.accept();
-					try {
-
-						BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-						String x ="";
-						vibrate();
-						String msg="";
-						while((x=in.readLine())!=null){
-							msg+=x;
-							
-						}
-						publishProgress("Recieved: "+msg);
-
-						
-					} finally {
-						socket.close();
-					}
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					if(listener!=null)
-						listener.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(MainActivity.class.getName(),e.getMessage());
 				}
 			}
 		}
-
-
 	}
-
-
-
-
-
-
 }

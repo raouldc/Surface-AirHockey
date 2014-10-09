@@ -53,9 +53,19 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="56dp"
         android:ems="10"
-        android:hint="Port" >
+        android:hint="Port"
+        android:text="9090" >
 
         <requestFocus />
     </EditText>
+
+    <TextView
+        android:id="@+id/myAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/portEditText"
+        android:layout_below="@+id/vibrateButton"
+        android:layout_marginTop="23dp"
+        android:text="TextView" />
     
 </RelativeLayout>
