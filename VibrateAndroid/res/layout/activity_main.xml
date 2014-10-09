@@ -15,13 +15,57 @@
         android:text="@string/hello_world" />
 
     <Button
-        android:id="@+id/button_id"
+        android:id="@+id/vibrateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="38dp"
-        android:onClick="vibrate"
-        android:text="@string/vibrate" />
+        android:layout_alignTop="@+id/textView1"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="@string/vibrate" 
+        android:onClick="vibrateButtonPressed"/>
 
+    <Button
+        android:id="@+id/listenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/vibrateButton"
+        android:layout_below="@+id/vibrateButton"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="133dp"
+        android:text="Listen" 
+        android:onClick="listenButtonPressed"/>
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/portEditText"
+        android:layout_alignRight="@+id/portEditText"
+        android:layout_below="@+id/listenButton"
+        android:layout_marginTop="68dp"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/portEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/listenButton"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="56dp"
+        android:ems="10"
+        android:hint="Port"
+        android:text="9090" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/myAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/portEditText"
+        android:layout_below="@+id/vibrateButton"
+        android:layout_marginTop="23dp"
+        android:text="TextView" />
+    
 </RelativeLayout>
