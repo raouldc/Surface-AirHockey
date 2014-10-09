@@ -19,6 +19,7 @@ namespace AirHockey
         private SpriteBatch _spriteBatch;
 
         private AirHockeyGame _game;
+        private String name;
 
         public abstract float Mass { get; }
 
@@ -44,6 +45,7 @@ namespace AirHockey
 
         protected void LoadTexture(String textureName)
         {
+            name = textureName;
             _texture = this.Game.Content.Load<Texture2D>(textureName);
         }
 
@@ -78,14 +80,27 @@ namespace AirHockey
         {
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(_texture, _position, null, Color.White * 0.9f, 0, new Vector2(_texture.Width / 2, _texture.Height / 2), _scale, SpriteEffects.None, 0);
-
+            if (name.Equals("Puck"))
+            {
+                _spriteBatch.Draw(_texture, _position, null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height / 2), 1.5f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                _spriteBatch.Draw(_texture, _position, null, Color.White * 0.2f, 0, new Vector2(_texture.Width / 2, _texture.Height / 2), _scale, SpriteEffects.None, 0);
+            }
             _spriteBatch.End();
         }
 
         public float Diameter
         {
-            get { return _texture.Width; }
+            get
+            {
+                if (name.Equals("Puck"))
+                {
+                    return _texture.Width;
+                }
+                return _texture.Width * 3f;
+            }
         }
 
         public float Radius { get; private set; }

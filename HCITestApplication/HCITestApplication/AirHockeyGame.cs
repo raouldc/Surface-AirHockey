@@ -104,7 +104,7 @@ namespace AirHockey
             // Get the window sized right.
             Program.InitializeWindow(Window);
             // Set the graphics device buffers.
-            graphics.IsFullScreen = true;
+           // graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = Program.WindowSize.Width;
             graphics.PreferredBackBufferHeight = Program.WindowSize.Height;
             graphics.ApplyChanges();
