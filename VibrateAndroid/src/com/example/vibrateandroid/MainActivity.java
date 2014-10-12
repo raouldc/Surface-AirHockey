@@ -96,6 +96,10 @@ public class MainActivity extends Activity {
 	}
 
 
+	/**
+	 * Vibrates if not vibrating.
+	 * Also starts a thread to mark not vibrating.
+	 */
 	public void vibrate() {
 		//textWidget.setText(textWidget.getText() + "Zoom... ");
 		if(!IsVibrating.get()){
@@ -119,11 +123,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	/*public void vibrate(View v){
-    	Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-    	 // Vibrate for 500 milliseconds
-    	 vibrator.vibrate(500);
-    }*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,6 +145,11 @@ public class MainActivity extends Activity {
 
 
 
+	/**
+	 * Async code to handle UDP network communication. 
+	 * @author Ace
+	 *
+	 */
 	class ListenOnPortTask extends AsyncTask<Integer, String, Void>{
 
 		@Override
